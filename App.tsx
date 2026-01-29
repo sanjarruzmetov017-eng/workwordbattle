@@ -19,6 +19,7 @@ import Premium from './components/Premium';
 import Support from './components/Support';
 import Notifications from './components/Notifications';
 import ThemeView from './components/ThemeView';
+import BottomNav from './components/BottomNav';
 
 const App: React.FC = () => {
   const [currentView, setCurrentView] = useState<View>(View.LANDING);
@@ -55,9 +56,11 @@ const App: React.FC = () => {
     setCurrentView(view);
   };
 
+  const isMainApp = isLoggedIn && currentView !== View.LANDING && currentView !== View.GAME && currentView !== View.AUTH;
+
   return (
-    <div className="min-h-screen bg-[#1a1a1a] flex">
-      {isLoggedIn && currentView !== View.LANDING && currentView !== View.GAME && currentView !== View.AUTH && (
+    <div className="min-h-screen bg-[#1a1a1a] flex flex-col md:flex-row">
+      {isMainApp && (
         <Sidebar 
           currentView={currentView} 
           onNavigate={navigateTo} 
@@ -66,7 +69,7 @@ const App: React.FC = () => {
         />
       )}
       
-      <main className="flex-1 overflow-y-auto">
+      <main className={`flex-1 overflow-y-auto ${isMainApp ? 'mobile-padding-bottom' : ''}`}>
         {currentView === View.LANDING && (
           <Landing 
             onNavigate={navigateTo}
@@ -100,8 +103,8 @@ const App: React.FC = () => {
         {currentView === View.LEARN && <Learn />}
         {currentView === View.TOURNAMENTS && <Leaderboard onJoinArena={() => startGame(GameMode.BLITZ)} />}
         {currentView === View.SOCIAL && <Social onChallenge={() => startGame(GameMode.FRIEND)} />}
-        {currentView === View.PROFILE && <Profile stats={stats} />}
-        {currentView === View.SHOP && <Shop stats={stats} onUpdateStats={(s) => setStats(prev => ({ ...prev, ...s }))} />}
+        {currentView === View.PROFILE && <Profile stats={stats} onNavigate={navigateTo} />}
+        {currentView === View.SHOP && <Shop stats={stats} onUpdateStats={(s) => setStats(prev => ({ ...prev, ...s }))} onNavigate={navigateTo} />}
         {currentView === View.ACHIEVEMENTS && <Achievements />}
         {currentView === View.SETTINGS && <Settings />}
         {currentView === View.PREMIUM && <Premium />}
@@ -109,6 +112,10 @@ const App: React.FC = () => {
         {currentView === View.NOTIFICATIONS && <Notifications />}
         {currentView === View.THEME && <ThemeView />}
       </main>
+
+      {isMainApp && (
+        <BottomNav currentView={currentView} onNavigate={navigateTo} />
+      )}
 
       {showDailyBonus && (
         <DailyBonusModal 

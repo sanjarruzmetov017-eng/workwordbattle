@@ -1,13 +1,18 @@
 
 import React from 'react';
-import { UserStats } from '../types';
+import { UserStats, View } from '../types';
 
-const Profile: React.FC<{ stats: UserStats }> = ({ stats }) => {
+interface ProfileProps {
+  stats: UserStats;
+  onNavigate?: (view: View) => void;
+}
+
+const Profile: React.FC<ProfileProps> = ({ stats, onNavigate }) => {
   // Mock activity data (similar to GitHub)
   const activity = Array.from({ length: 365 }, (_, i) => Math.floor(Math.random() * 5));
 
   return (
-    <div className="p-8 max-w-6xl mx-auto space-y-8">
+    <div className="p-8 max-w-6xl mx-auto space-y-8 animate-in fade-in duration-500">
       <div className="bg-[#242424] rounded-3xl p-10 flex flex-col md:flex-row gap-10 border border-gray-800 relative overflow-hidden">
         <div className="absolute top-0 right-0 w-64 h-64 bg-green-500/5 blur-[120px] rounded-full"></div>
         
@@ -23,7 +28,12 @@ const Profile: React.FC<{ stats: UserStats }> = ({ stats }) => {
               <p className="text-gray-500">Ready to battle!</p>
               <div className="text-[10px] text-gray-600 font-bold uppercase tracking-widest mt-2">Joined: 2024.12.14</div>
             </div>
-            <button className="px-6 py-2 bg-gray-800 hover:bg-gray-700 rounded-lg font-bold transition">Settings</button>
+            <button 
+              onClick={() => onNavigate && onNavigate(View.SETTINGS)}
+              className="px-6 py-2 bg-gray-800 hover:bg-gray-700 rounded-lg font-bold transition active:scale-95"
+            >
+              Settings
+            </button>
           </div>
 
           <div className="grid grid-cols-3 gap-6">

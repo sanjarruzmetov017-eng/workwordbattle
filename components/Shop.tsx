@@ -1,10 +1,11 @@
 
 import React, { useState } from 'react';
-import { UserStats } from '../types';
+import { UserStats, View } from '../types';
 
 interface ShopProps {
   stats: UserStats;
   onUpdateStats: (s: Partial<UserStats>) => void;
+  onNavigate?: (view: View) => void;
 }
 
 interface ShopItem {
@@ -16,7 +17,7 @@ interface ShopItem {
   desc: string;
 }
 
-const Shop: React.FC<ShopProps> = ({ stats, onUpdateStats }) => {
+const Shop: React.FC<ShopProps> = ({ stats, onUpdateStats, onNavigate }) => {
   const [tab, setTab] = useState('AVATARS');
   const [purchasedIds, setPurchasedIds] = useState<string[]>(['0']); // Assume default avatar is owned
   const [equippedIds, setEquippedIds] = useState<Record<string, string>>({
@@ -169,12 +170,15 @@ const Shop: React.FC<ShopProps> = ({ stats, onUpdateStats }) => {
       )}
       
       {/* Banner */}
-      <div className="mt-20 p-10 bg-gradient-to-r from-purple-600/10 to-blue-600/10 border border-white/5 rounded-[3rem] flex flex-col md:flex-row items-center justify-between">
+      <div 
+        onClick={() => onNavigate && onNavigate(View.PREMIUM)}
+        className="mt-20 p-10 bg-gradient-to-r from-purple-600/10 to-blue-600/10 border border-white/5 rounded-[3rem] flex flex-col md:flex-row items-center justify-between cursor-pointer hover:border-purple-500/30 transition-colors group"
+      >
         <div className="mb-6 md:mb-0">
-          <h3 className="text-2xl font-black text-white mb-2">Want 50% Off Everything?</h3>
+          <h3 className="text-2xl font-black text-white mb-2 group-hover:text-purple-400 transition-colors">Want 50% Off Everything?</h3>
           <p className="text-gray-500 font-medium">PRO members get exclusive discounts and weekly free items.</p>
         </div>
-        <button className="px-10 py-4 bg-white text-black font-black rounded-2xl hover:bg-gray-200 transition-all shadow-xl">
+        <button className="px-10 py-4 bg-white text-black font-black rounded-2xl hover:bg-gray-200 transition-all shadow-xl group-hover:scale-105">
           Upgrade to PRO
         </button>
       </div>
