@@ -12,6 +12,7 @@ interface SidebarProps {
 const Sidebar: React.FC<SidebarProps> = ({ currentView, onNavigate, onLogout, stats }) => {
   const primaryItems = [
     { id: View.DASHBOARD, label: 'Play', icon: '🎮' },
+    { id: View.WORDS, label: 'Words', icon: '📖' },
     { id: View.PUZZLES, label: 'Puzzles', icon: '🧩' },
     { id: View.LEARN, label: 'Learn', icon: '🎓' },
     { id: View.TOURNAMENTS, label: 'Tournaments', icon: '🏆' },

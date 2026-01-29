@@ -17,14 +17,20 @@ const Profile: React.FC<ProfileProps> = ({ stats, onNavigate }) => {
         <div className="absolute top-0 right-0 w-64 h-64 bg-green-500/5 blur-[120px] rounded-full"></div>
         
         <div className="relative">
-          <div className="w-40 h-40 bg-gradient-to-br from-gray-700 to-gray-900 rounded-[40px] flex items-center justify-center text-7xl shadow-2xl border-4 border-gray-800">👽</div>
+          <div className="w-40 h-40 bg-gradient-to-br from-gray-700 to-gray-900 rounded-[40px] flex items-center justify-center text-7xl shadow-2xl border-4 border-gray-800 overflow-hidden">
+            {stats.profileImage ? (
+              <img src={stats.profileImage} alt="Profile" className="w-full h-full object-cover" />
+            ) : (
+              stats.avatarEmoji || '👽'
+            )}
+          </div>
           <div className="absolute -bottom-2 -right-2 w-10 h-10 bg-green-500 border-4 border-[#242424] rounded-full"></div>
         </div>
 
         <div className="flex-1">
           <div className="flex justify-between items-start mb-6">
             <div>
-              <h2 className="text-4xl font-black mb-1">Player_One</h2>
+              <h2 className="text-4xl font-black mb-1">{stats.username}</h2>
               <p className="text-gray-500">Ready to battle!</p>
               <div className="text-[10px] text-gray-600 font-bold uppercase tracking-widest mt-2">Joined: 2024.12.14</div>
             </div>

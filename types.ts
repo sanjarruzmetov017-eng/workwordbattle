@@ -3,6 +3,7 @@ export enum View {
   LANDING = 'LANDING',
   AUTH = 'AUTH',
   DASHBOARD = 'DASHBOARD',
+  WORDS = 'WORDS',
   PUZZLES = 'PUZZLES',
   LEARN = 'LEARN',
   TOURNAMENTS = 'TOURNAMENTS',
@@ -23,16 +24,20 @@ export enum GameMode {
   BLITZ = 'Blitz',
   RAPID = 'Rapid',
   COMPUTER = 'Vs Computer',
-  FRIEND = 'Play a Friend'
+  FRIEND = 'Play a Friend',
+  VOCAB_QUIZ = 'Vocabulary Quiz'
 }
 
 export interface UserStats {
+  username: string;
   elo: number;
   wins: number;
   losses: number;
   draws: number;
   streak: number;
   coins: number;
+  profileImage?: string; // Base64 string for user profile picture
+  avatarEmoji?: string;
 }
 
 export interface WordEntry {

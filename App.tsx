@@ -20,6 +20,7 @@ import Support from './components/Support';
 import Notifications from './components/Notifications';
 import ThemeView from './components/ThemeView';
 import BottomNav from './components/BottomNav';
+import WordHistory from './components/WordHistory';
 
 const App: React.FC = () => {
   const [currentView, setCurrentView] = useState<View>(View.LANDING);
@@ -27,12 +28,14 @@ const App: React.FC = () => {
   const [showDailyBonus, setShowDailyBonus] = useState(false);
   const [selectedGameMode, setSelectedGameMode] = useState<GameMode | null>(null);
   const [stats, setStats] = useState<UserStats>({
+    username: 'Player_One',
     elo: 1200,
     wins: 12,
     losses: 8,
     draws: 2,
     streak: 1,
-    coins: 250
+    coins: 250,
+    avatarEmoji: '👽'
   });
 
   const handleLogin = () => {
@@ -54,6 +57,10 @@ const App: React.FC = () => {
 
   const navigateTo = (view: View) => {
     setCurrentView(view);
+  };
+
+  const updateStats = (newStats: Partial<UserStats>) => {
+    setStats(prev => ({ ...prev, ...newStats }));
   };
 
   const isMainApp = isLoggedIn && currentView !== View.LANDING && currentView !== View.GAME && currentView !== View.AUTH;
@@ -94,19 +101,21 @@ const App: React.FC = () => {
         {currentView === View.GAME && selectedGameMode && (
           <GameView 
             mode={selectedGameMode} 
+            playerElo={stats.elo}
             onBack={() => navigateTo(View.DASHBOARD)} 
-            onUpdateStats={(s) => setStats(prev => ({ ...prev, ...s }))}
+            onUpdateStats={updateStats}
           />
         )}
 
+        {currentView === View.WORDS && <WordHistory />}
         {currentView === View.PUZZLES && <Puzzles />}
         {currentView === View.LEARN && <Learn />}
         {currentView === View.TOURNAMENTS && <Leaderboard onJoinArena={() => startGame(GameMode.BLITZ)} />}
         {currentView === View.SOCIAL && <Social onChallenge={() => startGame(GameMode.FRIEND)} />}
         {currentView === View.PROFILE && <Profile stats={stats} onNavigate={navigateTo} />}
-        {currentView === View.SHOP && <Shop stats={stats} onUpdateStats={(s) => setStats(prev => ({ ...prev, ...s }))} onNavigate={navigateTo} />}
+        {currentView === View.SHOP && <Shop stats={stats} onUpdateStats={updateStats} onNavigate={navigateTo} />}
         {currentView === View.ACHIEVEMENTS && <Achievements />}
-        {currentView === View.SETTINGS && <Settings />}
+        {currentView === View.SETTINGS && <Settings stats={stats} onUpdateStats={updateStats} />}
         {currentView === View.PREMIUM && <Premium />}
         {currentView === View.SUPPORT && <Support />}
         {currentView === View.NOTIFICATIONS && <Notifications />}
@@ -120,7 +129,7 @@ const App: React.FC = () => {
       {showDailyBonus && (
         <DailyBonusModal 
           onClose={() => setShowDailyBonus(false)} 
-          onClaim={(amount) => setStats(prev => ({ ...prev, coins: prev.coins + amount }))}
+          onClaim={(amount) => updateStats({ coins: stats.coins + amount })}
         />
       )}
     </div>

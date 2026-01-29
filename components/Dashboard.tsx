@@ -30,17 +30,17 @@ const Dashboard: React.FC<DashboardProps> = ({ stats, onStartGame, onNavigate })
         
         <div className="md:col-span-2 bg-gradient-to-r from-[#6a11cb] via-[#2575fc] to-[#00d2ff] rounded-[2rem] md:rounded-[2.5rem] p-6 md:p-8 flex flex-col sm:flex-row justify-between items-center group relative overflow-hidden shadow-2xl">
           <div className="relative z-10 text-center sm:text-left mb-4 sm:mb-0">
-            <div className="inline-block px-3 py-1 bg-white/20 rounded-full text-[9px] font-black text-white uppercase tracking-widest mb-2 backdrop-blur-md">Limited Offer</div>
-            <div className="text-2xl md:text-3xl font-black text-white mb-1 tracking-tight">Unlock Pro Analysis</div>
-            <div className="text-white/70 text-xs md:text-sm font-medium">Get deep insights into your vocabulary growth.</div>
+            <div className="inline-block px-3 py-1 bg-white/20 rounded-full text-[9px] font-black text-white uppercase tracking-widest mb-2 backdrop-blur-md">New Feature</div>
+            <div className="text-2xl md:text-3xl font-black text-white mb-1 tracking-tight">Vocabulary Quiz</div>
+            <div className="text-white/70 text-xs md:text-sm font-medium">Add your own words and let AI test your knowledge.</div>
           </div>
           <button 
-            onClick={() => onNavigate(View.PREMIUM)}
+            onClick={() => onStartGame(GameMode.VOCAB_QUIZ)}
             className="relative z-10 w-full sm:w-auto px-8 py-3 bg-white text-blue-700 font-black rounded-xl hover:bg-gray-100 hover:scale-105 transition-all text-sm md:text-base"
           >
-            Go Premium
+            Start Quiz
           </button>
-          <div className="text-[10rem] opacity-10 absolute -right-10 -top-10 transform rotate-12 pointer-events-none">💎</div>
+          <div className="text-[10rem] opacity-10 absolute -right-10 -top-10 transform rotate-12 pointer-events-none">🎓</div>
         </div>
       </div>
 
@@ -64,7 +64,7 @@ const Dashboard: React.FC<DashboardProps> = ({ stats, onStartGame, onNavigate })
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 md:gap-4 mt-8 md:mt-10">
               <SecondaryModeButton icon="🤖" label="Vs Computer" sub="Levels 1-10" onClick={() => onStartGame(GameMode.COMPUTER)} />
-              <SecondaryModeButton icon="🤝" label="Play a Friend" sub="Private Room" onClick={() => onStartGame(GameMode.FRIEND)} />
+              <SecondaryModeButton icon="🎓" label="Vocab Practice" sub="Test yourself" onClick={() => onStartGame(GameMode.VOCAB_QUIZ)} />
             </div>
           </div>
 
@@ -93,18 +93,23 @@ const Dashboard: React.FC<DashboardProps> = ({ stats, onStartGame, onNavigate })
           </div>
         </div>
 
-        {/* Right Sidebar Stats - Repositioned for mobile */}
+        {/* Right Sidebar Stats */}
         <div className="lg:col-span-4 space-y-6 md:space-y-8">
-          {/* User Profile Card */}
           <div className="bg-[#242424] rounded-[2rem] p-6 md:p-8 border border-white/5 shadow-2xl relative overflow-hidden">
              <div className="flex items-center justify-between mb-6 md:mb-8">
                <div onClick={() => onNavigate(View.PROFILE)} className="flex items-center space-x-3 md:space-x-4 cursor-pointer group">
                  <div className="relative">
-                   <div className="w-12 h-12 md:w-16 md:h-16 rounded-2xl bg-gradient-to-br from-gray-700 to-gray-900 flex items-center justify-center text-2xl md:text-3xl border border-white/10">👤</div>
+                   <div className="w-12 h-12 md:w-16 md:h-16 rounded-2xl bg-gradient-to-br from-gray-700 to-gray-900 flex items-center justify-center text-2xl md:text-3xl border border-white/10 overflow-hidden">
+                    {stats.profileImage ? (
+                      <img src={stats.profileImage} alt="Profile" className="w-full h-full object-cover" />
+                    ) : (
+                      stats.avatarEmoji || '👽'
+                    )}
+                   </div>
                    <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-green-500 border-2 border-[#242424] rounded-full"></div>
                  </div>
                  <div>
-                   <div className="font-black text-lg md:text-xl tracking-tight group-hover:text-[#8cc63f] transition-colors leading-tight">Player_One</div>
+                   <div className="font-black text-lg md:text-xl tracking-tight group-hover:text-[#8cc63f] transition-colors leading-tight">{stats.username}</div>
                    <div className="text-[9px] text-gray-500 font-black uppercase tracking-widest">Veteran S5</div>
                  </div>
                </div>
@@ -127,7 +132,6 @@ const Dashboard: React.FC<DashboardProps> = ({ stats, onStartGame, onNavigate })
              </div>
           </div>
 
-          {/* Social activity and News hidden on small mobile to save vertical space */}
           <div className="hidden sm:block bg-[#1a1a1a] rounded-[2rem] p-6 md:p-8 border border-white/5 shadow-xl">
             <div className="flex justify-between items-center mb-6">
               <h4 className="font-black uppercase tracking-widest text-[10px] text-gray-500">Friends Activity</h4>

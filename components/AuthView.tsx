@@ -12,6 +12,7 @@ const AuthView: React.FC<AuthViewProps> = ({ onBack, onSuccess }) => {
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -75,14 +76,22 @@ const AuthView: React.FC<AuthViewProps> = ({ onBack, onSuccess }) => {
                   </div>
                 )}
 
-                <div className="inputBx">
+                <div className="inputBx relative">
                   <input 
-                    type="password" 
+                    type={showPassword ? "text" : "password"} 
                     placeholder="Password" 
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     required 
+                    className="!pr-14"
                   />
+                  <button 
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="absolute right-5 top-1/2 -translate-y-1/2 text-white/50 hover:text-white transition-colors text-xl"
+                  >
+                    {showPassword ? "👁️‍🗨️" : "👁️"}
+                  </button>
                 </div>
 
                 <div className="inputBx">
@@ -95,7 +104,7 @@ const AuthView: React.FC<AuthViewProps> = ({ onBack, onSuccess }) => {
 
               <div className="links">
                 <a href="#" onClick={(e) => e.preventDefault()}>Forget Password</a>
-                <a href="#" onClick={(e) => { e.preventDefault(); setIsLogin(!isLogin); }}>
+                <a href="#" onClick={(e) => { e.preventDefault(); setIsLogin(!isLogin); setShowPassword(false); }}>
                   {isLogin ? "Register" : "Login"}
                 </a>
               </div>
